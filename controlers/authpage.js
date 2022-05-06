@@ -16,12 +16,13 @@ const postlogin = async (req, res) => {
     if(!validPassword) return res.status(400).send('email or password not correct');
 
     const token = jwt.sign({ email: req.body.email }, process.env.TOKEN_SECRET);
+    console.log("token: "+ token);
     
     try{
         return res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-        }).status(200).render('homepage');
+        }).status(200).redirect('homepage');
     } catch(err) {
         res.status(404).send('Error 404: Page not found.');
     }
@@ -55,8 +56,8 @@ const postregister = async(req,res) => {
         confirmPassword: hashedPassword,
         chart:req.body.chart,
     });
-    //firstName: req.body.firstName, lastName: req.body.lastName, birthDate: req.body.birthDate, mobile: req.body.mobile, chart: req.body.chart 
-    const token = jwt.sign({ email: req.body.email }, process.env.TOKEN_SECRET);
+    
+    const token = jwt.sign({ firstName: req.body.firstName, lastName: req.body.lastName, birthDate: req.body.birthDate, email: req.body.email, mobile: req.body.mobile }, process.env.TOKEN_SECRET);
     //console.log("token: "+ token);
 
     try{
@@ -64,7 +65,7 @@ const postregister = async(req,res) => {
         return res.cookie("token", token, {
             httpOnly: true,
             secure: true,
-        }).status(200).render('homepage');
+        }).status(200).redirect('homepage');
         
     } catch(err) {
         res.status(404).send(err);
