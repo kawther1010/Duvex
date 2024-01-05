@@ -42,12 +42,10 @@ var buyerschema = new mongoose.Schema({
         required: false,
         default:"",
     },
-    /*
     role: {
         type: String,
-        //default: buyer,
+        default: "buyer",
     }
-    */
 }, {timestamps: true});
 
 

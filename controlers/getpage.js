@@ -1,4 +1,6 @@
 const express = require('express');
+const Buyer = require('../models/model.buyer');
+const Sale = require('../models/model.sale');
 
 const gethome = (req, res) => {
     try{
@@ -32,12 +34,43 @@ const gethomepage = (req, res) => {
     }
 }
 
+//working on displaying buyer infos on his profile
 const getprofile = (req, res) => {
+    Buyer.findOne({email: req.cookies.email}, (err, docs) => {
+        try{
+            return res.status(200).render('profile', {
+                firstName: docs.firstName,
+                lastName: docs.lastName
+            });
+        } catch(err) {
+            res.status(404).send('Error 404: Page not found');
+        }
+    });
+}
+
+const getbill = (req, res) => {
     try{
-        return res.status(200).render('profile');
-    } catch(err) {
-        res.status(404).send('Error 404: Page not found');
+        res.status(200).render('bill');
+    } catch(err){
+        res.status(404).send('Page 404: Page not found');
     }
+}
+
+const getsalesList = (req, res) => {
+    Sale.find({email: req.cookies.email}, (err, docs) => {
+        try{
+            return res.status(200).render('salesList', {
+                salesList: docs,
+                /*
+                product: sale.product,
+                quantity: sale.quantity,
+                delivered: sale.delivered,
+                */
+            });
+        } catch(err) {
+            return res.status(404).send('Error 404: Page not found');
+        }
+    });
 }
 
 const getlogout = (req, res) => {
@@ -54,5 +87,7 @@ module.exports = {
     getlogin,
     gethomepage,
     getprofile,
+    getbill,
+    getsalesList,
     getlogout,
 }

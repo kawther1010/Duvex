@@ -36,6 +36,7 @@ app.use('/', authRoutes);
 app.use('/', getRoutes);
 app.use('/', postRoutes);
 
-app.listen(8000, () => {
+app.listen(8080, () => {
     console.log('running!');
 });
+A
